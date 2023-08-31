@@ -10,12 +10,14 @@ import org.springframework.web.server.ResponseStatusException
 
 @Controller
 class HtmlController(
-    private val articleRepository: ArticleRepository
+    private val articleRepository: ArticleRepository,
+    private val properties: BlogProperties
 ) {
 
     @GetMapping("/")
     fun blog(model: Model): String {
-        model["title"] = "Blog"
+        model["title"] = properties.title
+        model["banner"] = properties.banner
         model["articles"] = articleRepository.findAllByOrderByAddedAtDesc().map {
             it.render()
         }
